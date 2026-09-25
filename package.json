@@ -1,0 +1,10 @@
+{
+    "name": "Genifa",
+    "version": "0.0.0",
+    "description": "Sistema de gestão de contas a receber.",
+    "author": "Jamille",
+    "type": "module",
+    "scripts": {
+        "dev": "node --watch ./server.ts"
+    }
+}
