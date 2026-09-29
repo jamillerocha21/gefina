@@ -48,6 +48,7 @@ const invoices: Invoice[] = [
 
 app.use(function (request, response, next){
     console.log(request.method + ' ' + request.url);
+    next();
 });
 
 app.get('/api/health', function(request, response) {
@@ -56,6 +57,18 @@ app.get('/api/health', function(request, response) {
 
 app.get ('/api/invoices', function (request, response) {
     response.status(200).json(invoices);
+});
+
+app.get('/api/invoices/:id', function (request, response) {
+  const id = +request.params.id;
+
+  for (let i = 0; i < invoices.length; i++) {
+    if (invoices[i].id === id) {
+      response.status(200).json(invoices[i]);
+      return;
+    }
+  }
+  response.status(404).json({error: { messege: 'Fatura não encontrada'}});
 });
 
 app.use(function (request, response) {
