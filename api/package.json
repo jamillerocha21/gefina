@@ -1,10 +1,9 @@
 {
   "type": "module",
   "scripts": {
-    "check": "tsc --noEmit",
-    "fix": "biome check --write ./",
-    "fix:unsafe": "biome check --write --unsafe ./",
-    "dev": "node --watch ./server.ts"
+    "start": "node ./server.ts",
+    "dev": "node --watch ./server.ts",
+    "check": "tsc --noEmit"
   },
   "devDependencies": {
     "@types/express": "^5.0.6",
