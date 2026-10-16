@@ -13,12 +13,21 @@ app.use((request, _response, next) => {
 });
 
 app.get('/api/health', async (_request, response) => {
- const connect = await pool.query('SELECT VERSION();');
+  try {
+    const connect = await pool.query('SELECT VERSION();');
 
-  response.status(200).json({ 
+    response.status(200).json({ 
     server: 'Server is running.',
     database: connect.rows[0].datname
    });
+  } catch (error) {
+    console.error(error);
+
+    response.status(500).json({
+      server: 'Server is running.',
+      database: 'unavaliable'
+    })
+  }
 });
 
 app.use('/api/invoices', invoices);
