@@ -22,9 +22,6 @@ router.get('/', async (_request, response) => {
       message: 'Não foi possível carregar as faturas.'
     }})
   }
-
-  const invoices = await findAllInvoices();
-  response.status(200).json(invoices);
 });
 
 router.get('/:id', async (request, response) => {
