@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 
 import InvoiceTable from './InvoiceTable.tsx';
 import { Invoice } from './invoiceType.ts';
+import InvoiceForm from './InvoiceForm.tsx';
 
 export default function InvoicePage() {
   const [invoices, setInvoices] = useState<Invoice[]>([]);
@@ -34,5 +35,6 @@ export default function InvoicePage() {
   return <>
     <h1>Faturas</h1>
     <InvoiceTable invoices={invoices}/>
+    <InvoiceForm />
   </> 
 }
