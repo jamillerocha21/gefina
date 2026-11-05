@@ -1,12 +1,18 @@
 import { SubmitEvent, useState } from 'react';
 
-import { Invoice, InvoiceInput, InvoiceStatus } from './invoiceType';
+import { 
+    Invoice, 
+    InvoiceInput, 
+    InvoiceStatus,
+    InvoiceFieldErrors
+} from './invoiceType';
 import { CustomerOption } from './customerType';
 
 interface InvoiceFormProps {
     invoice: Invoice | null;
     customers: CustomerOption[];
     error: string | null;
+    fieldErrors: InvoiceFieldErrors;
     onDelete: () => void;
     onCancel: () => void;
     onSubmit: (values: InvoiceInput) => void;
@@ -14,7 +20,7 @@ interface InvoiceFormProps {
 }
 
 export default function InvoiceForm(props: InvoiceFormProps) {
-    const [customerId, setCustomerId] = useState(!props.invoice ? '': props.invoice.customer.id);
+    const [customerId, setCustomerId] = useState(!props.invoice ? undefined : String(props.invoice.customer.id));
     const [amount, setAmount] = useState(!props.invoice ? '': (props.invoice.amount / 100).toFixed(2));
     const [status, setStatus] = useState<InvoiceStatus>(!props.invoice ? 'pending' : props.invoice.status);
     const [issueDate, setIssueDate] = useState(!props.invoice ? '' : props.invoice.issueDate);
@@ -41,7 +47,7 @@ export default function InvoiceForm(props: InvoiceFormProps) {
                 onChange={(event) => setCustomerId(event.target.value)}
                 required
             >
-                <option>Selecione um Cliente</option>
+                <option value=''>Selecione um Cliente</option>
                 {props.customers.map((customer) => {
                     return <option key={customer.id} value={customer.id}>
                         {customer.name} — {customer.email}
@@ -117,5 +123,11 @@ export default function InvoiceForm(props: InvoiceFormProps) {
                 disabled={props.busy}
             >{props.busy ? 'Salvando...' : 'Salvar'}</button>
         </div>
+        {props.fieldErrors.custormerId && <p className='form-error'>{props.fieldErrors.custormerId}</p>}
+        {props.fieldErrors.amount && <p className='form-error'>{props.fieldErrors.amount}</p>}
+        {props.fieldErrors.status && <p className='form-error'>{props.fieldErrors.status}</p>}
+        {props.fieldErrors.issueDate && <p className='form-error'>{props.fieldErrors.issueDate}</p>}
+        {props.fieldErrors.dueDate && <p className='form-error'>{props.fieldErrors.dueDate}</p>}
+        {props.error && <p className='form-error'>{props.error}</p>}
     </form>;
 }

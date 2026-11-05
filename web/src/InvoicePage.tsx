@@ -1,20 +1,26 @@
 import { useState, useEffect, useRef } from 'react';
 
 import InvoiceTable from './InvoiceTable.tsx';
-import { Invoice, InvoiceInput } from './invoiceType.ts';
+import { 
+  Invoice, 
+  InvoiceInput, 
+  InvoiceFieldErrors 
+} from './invoiceType.ts';
 import InvoiceForm from './InvoiceForm.tsx';
 
 import {
-    getAllInvoices,
-    createInvoice,
-    updateInvoice
+  getAllInvoices,
+  createInvoice,
+  updateInvoice
 } from './invoiceApi.ts';
+
 import { CustomerOption } from './customerType.ts';
 
 export default function InvoicePage() {
   const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [customersOptions, setCustomersOptions] = useState<CustomerOption[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<InvoiceFieldErrors>({});
   const [busy, setBusy] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -84,7 +90,9 @@ export default function InvoicePage() {
 
     try {
        if (!target) {
-          await createInvoice(datas);
+          const failure = await createInvoice(datas);
+          if (failure) setFieldErrors(failure.fields);
+
       } else {
           await updateInvoice(target.id, datas);
       }
@@ -93,8 +101,9 @@ export default function InvoicePage() {
 
     } catch (error) {
       if (error instanceof Error) setFormError(error.message);
+    } finally {
+        setBusy(false);
     }
-    setBusy(false);
   }
 
   if (loading) return <p>Carregando faturas...</p>
@@ -119,13 +128,17 @@ export default function InvoicePage() {
     <dialog 
       className='invoice-modal'
       ref={dialogRef}
-      onClose={() => setDialogContent(false)}
+      onClose={() => {
+        setDialogContent(false);
+        setFieldErrors({});
+      }}
     >
         
       {dialogContent && <InvoiceForm
-         invoice={target}
+        invoice={target}
         customers={customersOptions}
         error={formError}
+        fieldErrors={fieldErrors}
         onDelete={() => null}
         onCancel={closeModal}
         onSubmit={submit}
