@@ -86,7 +86,7 @@ describe( //describe is used to group related tests
         );
 
         it(
-            'cria a fatura e devolve o registro criado',
+            'cria fatura e devolve o registro criado',
             async () => {
                 const response = await request
                 .post('/api/invoices')
@@ -105,6 +105,23 @@ describe( //describe is used to group related tests
             }
         );
         it(
+            'altera fatura e devolve fatura alterada',
+            async() => {
+                const response = await request
+                .put(`/api/invoices/${invoice.id}`)
+                .send({
+                    customerId: customer.id,
+                    amount: 125037,
+                    status: 'paid',
+                    issueDate: '2026-10-01',
+                    dueDate: '2026-10-31'
+                });
+
+                expect(response.status).toBe(200);
+                expect(response.body.situation).toBe('paid');
+            }
+        );
+        it(
             'remove a fatura',
             async () => {
 
@@ -113,6 +130,32 @@ describe( //describe is used to group related tests
 
                 expect(removal.status).toBe(204);
                 expect(search.status).toBe(404);
+            }
+        );
+        
+        it(
+            'recusa buscar fatura com identificador inválido',
+            async () => {
+                const response = await request.get('/api/invoices/abc');
+                expect(response.status).toBe(400);
+            }
+        );
+
+        it(
+            'recusa criação de fatura com valor zerado',
+            async () => {
+                const response = await request
+                .post('/api/invoices')
+                .send( {
+                    customerId: customer.id,
+                    amount: 0,
+                    status: 'pending',
+                    issueDate: '2026-10-01',
+                    dueDate: '2026-10-31'
+                });
+
+                expect(response.status).toBe(400);
+                expect(response.body.error.fields.amount).toBeDefined();
             }
         );
     }
