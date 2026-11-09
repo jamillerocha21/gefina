@@ -144,7 +144,7 @@ export async function modifyInvoice(
   return await findInvoiceById(id);
 }
 export async function removeInvoice(id: number): Promise<boolean> {
-  const connect = await pool.query< { id: number }>(
+  const connect = await pool.query<{ id: number }>(
     `
     DELETE FROM invoices
     WHERE id = $1

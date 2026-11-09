@@ -98,4 +98,4 @@ Content-Type: application/json
 }
 
 ### Deletar fatura
-DELETE {{host}}/api/invoices/181
+DELETE {{host}}/api/invoices/50
