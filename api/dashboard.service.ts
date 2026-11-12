@@ -3,12 +3,6 @@ import type { InvoiceStatus } from './invoice.schema.ts';
 import { findOverdueInvoices, findRecentInvoices, type Invoice } from './invoice.service.ts';
 import prisma from './prisma.ts';
 
-interface DashboardTotals {
-  paid: number;
-  pending: number;
-  invoiceCount: number;
-  customerCount: number;
-}
 interface Dashboard {
   totals: {
     paid: number;
