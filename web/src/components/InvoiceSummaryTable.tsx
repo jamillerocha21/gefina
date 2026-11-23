@@ -1,5 +1,5 @@
-import type { Invoice } from './invoiceType.ts';
-import { formatCurrency, formatDate } from './utils.ts';
+import type { Invoice } from '../types/invoiceType.ts';
+import { formatCurrency, formatDate } from '../utils.ts';
 
 interface InvoiceSummaryTableProps {
   title: string;
@@ -7,7 +7,9 @@ interface InvoiceSummaryTableProps {
   invoices: Invoice[];
   date: (invoice: Invoice) => string;
 }
-export default function InvoiceSummaryTable(props: InvoiceSummaryTableProps) {
+export default function InvoiceSummaryTable(
+  props: InvoiceSummaryTableProps
+) {
   const base = 'p-3 border-b border-border';
 
   return (

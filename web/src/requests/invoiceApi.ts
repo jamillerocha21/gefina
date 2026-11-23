@@ -1,4 +1,7 @@
-import type { ApiFailure, Invoice, InvoiceInput } from './invoiceType.ts';
+import type { 
+  ApiFailure, 
+  Invoice, 
+  InvoiceInput } from '../types/invoiceType.ts';
 
 const header = { 'content-type': 'application/json' };
 
