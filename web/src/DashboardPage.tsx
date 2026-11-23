@@ -31,21 +31,21 @@ export default function DashboardPage() {
     getDashboard();
   }, []);
 
-  if (loading) return <p>Carregando painel inicial...</p>;
+  if (loading) return <p className="text-sm text-text-muted">Carregando...</p>;
 
-  if (error !== null || dashboard === null) return <p>{error}</p>;
+  if (error !== null || dashboard === null) return <p className="text-overdue">{error}</p>;
 
   return (
-    <div>
-      <h1>Painel Inicial</h1>
+    <>
+      <h1 className="text-xl font-semibold mb-7">Painel Inicial</h1>
 
-      <div className="summary-cards">
+      <div className="flex gap-4">
         <SummaryCard label="Total Recebido: " value={formatCurrency(dashboard.totals.paid)} />
         <SummaryCard label="Total Pendente: " value={formatCurrency(dashboard.totals.pending)} />
         <SummaryCard label="Faturas: " value={String(dashboard.totals.invoiceCount)} />
         <SummaryCard label="Clientes: " value={String(dashboard.totals.customerCount)} />
       </div>
-      <div className="summary-tables">
+      <div className="flex gap-6 mt-8">
         <InvoiceSummaryTable
           title="Faturas Recentes"
           dateLabel="Emissão"
@@ -59,6 +59,11 @@ export default function DashboardPage() {
           date={(invoice) => invoice.dueDate}
         />
       </div>
-    </div>
+      <div className="flex justify-center">
+        <small className="fixed bottom-0 left-[calc(50%+120px)] -translate-x-1/2">
+          &copy; 2026. Gefina - Gestão financeira simples e eficiente.
+        </small>
+      </div>
+    </>
   );
 }

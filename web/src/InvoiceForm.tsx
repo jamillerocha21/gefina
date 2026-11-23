@@ -18,13 +18,13 @@ interface InvoiceFormProps {
 
 export default function InvoiceForm(props: InvoiceFormProps) {
   const [customerId, setCustomerId] = useState(
-    !props.invoice ? undefined : String(props.invoice.customer.id),
+    !props.invoice ? undefined : String(props.invoice.customer.id)
   );
   const [amount, setAmount] = useState(
-    !props.invoice ? '' : (props.invoice.amount / 100).toFixed(2),
+    !props.invoice ? '' : (props.invoice.amount / 100).toFixed(2)
   );
   const [status, setStatus] = useState<InvoiceStatus>(
-    !props.invoice ? 'pending' : props.invoice.status,
+    !props.invoice ? 'pending' : props.invoice.status
   );
   const [issueDate, setIssueDate] = useState(!props.invoice ? '' : props.invoice.issueDate);
   const [dueDate, setdueDate] = useState(!props.invoice ? '' : props.invoice.dueDate);
@@ -37,16 +37,28 @@ export default function InvoiceForm(props: InvoiceFormProps) {
       amount: Math.round(Number(amount) * 100),
       status,
       issueDate,
-      dueDate,
+      dueDate
     });
   };
-  return (
-    <form onSubmit={handleSubmit}>
-      <h2>{!props.invoice ? 'Criar fatura' : 'Editar fatura'}</h2>
 
-      <div className="field">
-        <label htmlFor="customer">Cliente</label>
+  const field = 'flex flex-col gap-1';
+  const label = 'text-sm text-text-muted';
+  const input =
+    'px-3 py-2 border border-border rounded-control bg-surface-raised scheme-dark focus-visible:outline-2 focus-visible:outline-primary';
+  const button =
+    'flex-1 px-4 py-2 rounded-control cursor-pointer disabled:cursor-default disabled:opacity-60 focus-visible:outline-2 focus-visible:outline-primary';
+  const error = 'text-sm text-overdue';
+
+  return (
+    <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+      <h2 className="text-xl font-semibold">{!props.invoice ? 'Criar fatura' : 'Editar fatura'}</h2>
+
+      <div className={field}>
+        <label className={`{$label} appearance-none`} htmlFor="customer">
+          Cliente
+        </label>
         <select
+          className={`${input} appearance-none`}
           id="customer"
           value={customerId}
           onChange={(event) => setCustomerId(event.target.value)}
@@ -62,22 +74,29 @@ export default function InvoiceForm(props: InvoiceFormProps) {
           })}
         </select>
       </div>
-      <div className="field">
-        <label htmlFor="amount">Valor</label>
-        <input
-          id="amount"
-          type="number"
-          step="0.01"
-          min="0.01"
-          value={amount}
-          onChange={(event) => setAmount(event.target.value)}
-          required
-        />
-      </div>
-      <div className="horizontal-fields">
-        <div className="field">
-          <label htmlFor="status">Situação</label>
+
+      <div className="flex gap-2">
+        <div className={`${field} flex-1`}>
+          <label className={label} htmlFor="amount">
+            Valor
+          </label>
+          <input
+            className={input}
+            id="amount"
+            type="number"
+            step="0.01"
+            min="0.01"
+            value={amount}
+            onChange={(event) => setAmount(event.target.value)}
+            required
+          />
+        </div>
+        <div className={field}>
+          <label className={label} htmlFor="status">
+            Situação
+          </label>
           <select
+            className={`${input} appearance-none`}
             id="status"
             value={status}
             onChange={(event) => setStatus(event.target.value as InvoiceStatus)}
@@ -86,9 +105,15 @@ export default function InvoiceForm(props: InvoiceFormProps) {
             <option value="paid">Paga</option>
           </select>
         </div>
-        <div className="field">
-          <label htmlFor="issueDate">Emissão</label>
+      </div>
+
+      <div className="flex gap-2">
+        <div className={`${field} flex-1`}>
+          <label className={label} htmlFor="issueDate">
+            Emissão
+          </label>
           <input
+            className={input}
             id="issueDate"
             type="date"
             value={issueDate}
@@ -96,9 +121,12 @@ export default function InvoiceForm(props: InvoiceFormProps) {
             required
           />
         </div>
-        <div className="field">
-          <label htmlFor="dueDate">Vencimento</label>
+        <div className={`${field} flex-1`}>
+          <label className={label} htmlFor="dueDate">
+            Vencimento
+          </label>
           <input
+            className={input}
             id="dueDate"
             type="date"
             min={issueDate}
@@ -109,10 +137,10 @@ export default function InvoiceForm(props: InvoiceFormProps) {
         </div>
       </div>
 
-      <div className="form-actions">
+      <div className="flex gap-2 mt-6">
         {!props.invoice ? null : (
           <button
-            className="button-danger"
+            className={`${button} bg-surface-raised text-overdue border border-overdue`}
             type="button"
             onClick={props.onDelete}
             disabled={props.busy}
@@ -122,22 +150,28 @@ export default function InvoiceForm(props: InvoiceFormProps) {
         )}
 
         <button
-          className="button-secondary"
+          className={`${button} bg-surface-raised border-border`}
           type="button"
           onClick={props.onCancel}
           disabled={props.busy}
         >
           Cancelar
         </button>
-        <button className="button-primary" type="submit" disabled={props.busy}>
+        <button
+          className={`${button} border border-transparent bg-primary`}
+          type="submit"
+          disabled={props.busy}
+        >
           {props.busy && !props.confirmDelete ? 'Salvando...' : 'Salvar'}
         </button>
       </div>
+
       {props.confirmDelete && (
-        <div className="confirm-form">
-          <p>A exclusão é definitiva e não pode ser desfeita. Deseja prosseguir?</p>
+        <div className="flex gap-2 items-center">
+          <p className="text-pending">A exclusão é irreversível. Deseja prosseguir?</p>
+
           <button
-            className="button-secondary"
+            className={`${button} bg-surface-raised border border-border}`}
             type="button"
             onClick={() => props.setConfirmDelete(false)}
             disabled={props.busy}
@@ -145,7 +179,7 @@ export default function InvoiceForm(props: InvoiceFormProps) {
             Não
           </button>
           <button
-            className="button-danger"
+            className={`${button} bg-surface-raised  text-overdue border border-overdue}`}
             type="button"
             onClick={props.confirm}
             disabled={props.busy}
@@ -157,11 +191,11 @@ export default function InvoiceForm(props: InvoiceFormProps) {
       {props.fieldErrors.custormerId && (
         <p className="form-error">{props.fieldErrors.custormerId}</p>
       )}
-      {props.fieldErrors.amount && <p className="form-error">{props.fieldErrors.amount}</p>}
-      {props.fieldErrors.status && <p className="form-error">{props.fieldErrors.status}</p>}
-      {props.fieldErrors.issueDate && <p className="form-error">{props.fieldErrors.issueDate}</p>}
-      {props.fieldErrors.dueDate && <p className="form-error">{props.fieldErrors.dueDate}</p>}
-      {props.error && <p className="form-error">{props.error}</p>}
+      {props.fieldErrors.amount && <p className={error}>{props.fieldErrors.amount}</p>}
+      {props.fieldErrors.status && <p className={error}>{props.fieldErrors.status}</p>}
+      {props.fieldErrors.issueDate && <p className={error}>{props.fieldErrors.issueDate}</p>}
+      {props.fieldErrors.dueDate && <p className={error}>{props.fieldErrors.dueDate}</p>}
+      {props.error && <p className={error}>{props.error}</p>}
     </form>
   );
 }

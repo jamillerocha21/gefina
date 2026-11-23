@@ -34,15 +34,15 @@ function formatInvoice(record: InvoiceWithCustomer): Invoice {
     customer: {
       id: record.customer.id,
       name: record.customer.name,
-      email: record.customer.email,
-    },
+      email: record.customer.email
+    }
   };
 }
 
 export async function findAllInvoices(): Promise<Invoice[]> {
   const records = await prisma.invoice.findMany({
     include: { customer: true },
-    orderBy: { createdAt: 'desc' },
+    orderBy: { createdAt: 'desc' }
   });
 
   return records.map(formatInvoice);
@@ -51,7 +51,7 @@ export async function findAllInvoices(): Promise<Invoice[]> {
 export async function findInvoiceById(id: number): Promise<Invoice | undefined> {
   const record = await prisma.invoice.findUnique({
     include: { customer: true },
-    where: { id },
+    where: { id }
   });
 
   return !record ? undefined : formatInvoice(record);
@@ -61,7 +61,7 @@ export async function findRecentInvoices(): Promise<Invoice[]> {
   const records = await prisma.invoice.findMany({
     include: { customer: true },
     orderBy: { createdAt: 'desc' },
-    take: 5,
+    take: 5
   });
 
   return records.map(formatInvoice);
@@ -71,11 +71,11 @@ export async function findOverdueInvoices(): Promise<Invoice[]> {
   const records = await prisma.invoice.findMany({
     where: {
       status: 'pending',
-      dueDate: { lt: new Date() },
+      dueDate: { lt: new Date() }
     },
     include: { customer: true },
     orderBy: { dueDate: 'asc' },
-    take: 5,
+    take: 5
   });
 
   return records.map(formatInvoice);
@@ -88,9 +88,9 @@ export async function insertInvoice(data: InvoiceInput): Promise<Invoice> {
       amount: data.amount,
       status: data.status,
       issueDate: new Date(data.issueDate),
-      dueDate: new Date(data.dueDate),
+      dueDate: new Date(data.dueDate)
     },
-    include: { customer: true },
+    include: { customer: true }
   });
 
   return formatInvoice(record);
@@ -108,9 +108,9 @@ export async function modifyInvoice(id: number, data: InvoiceInput): Promise<Inv
       amount: data.amount,
       status: data.status,
       issueDate: new Date(data.issueDate),
-      dueDate: new Date(data.dueDate),
+      dueDate: new Date(data.dueDate)
     },
-    include: { customer: true },
+    include: { customer: true }
   });
 
   return formatInvoice(record);

@@ -5,7 +5,7 @@ import {
   findInvoiceById,
   insertInvoice,
   modifyInvoice,
-  removeInvoice,
+  removeInvoice
 } from './invoice.service.ts';
 
 const router = Router();
@@ -29,8 +29,8 @@ router.get('/:id', async (request, response) => {
     response.status(400).json({
       error: {
         status: 400,
-        message: 'Identificador inválido.',
-      },
+        message: 'Identificador inválido.'
+      }
     });
 
     return;
@@ -40,8 +40,8 @@ router.get('/:id', async (request, response) => {
     response.status(404).json({
       erro: {
         status: 404,
-        message: 'Fatura não encontrada.',
-      },
+        message: 'Fatura não encontrada.'
+      }
     });
   response.status(200).json(invoice);
 });
@@ -54,8 +54,8 @@ router.post('/', async (request, response) => {
       error: {
         status: 400,
         message: 'Dados inválidos',
-        fields: toFielErrors(result.error),
-      },
+        fields: toFielErrors(result.error)
+      }
     });
   }
   const invoice = await insertInvoice(result.data);
@@ -70,8 +70,8 @@ router.put('/:id', async (request, response) => {
     response.status(400).json({
       error: {
         status: 400,
-        message: 'Identificador inválido.',
-      },
+        message: 'Identificador inválido.'
+      }
     });
 
     return;
@@ -82,8 +82,8 @@ router.put('/:id', async (request, response) => {
     response.status(404).json({
       error: {
         status: 404,
-        message: 'Fatura não encontrada.',
-      },
+        message: 'Fatura não encontrada.'
+      }
     });
 
   response.status(200).json(invoice);
@@ -96,8 +96,8 @@ router.delete('/:id', async (request, response) => {
     response.status(400).json({
       error: {
         status: 400,
-        message: 'Identificador inválido.',
-      },
+        message: 'Identificador inválido.'
+      }
     });
 
     return;
@@ -107,8 +107,8 @@ router.delete('/:id', async (request, response) => {
     response.status(404).json({
       error: {
         status: 404,
-        message: 'Fatura não encontrada.',
-      },
+        message: 'Fatura não encontrada.'
+      }
     });
 
   response.status(204).end();
