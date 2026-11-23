@@ -1,6 +1,6 @@
 import { type SetStateAction, type SubmitEvent, useState } from 'react';
-import type { CustomerOption } from './customerType';
-import type { Invoice, InvoiceFieldErrors, InvoiceInput, InvoiceStatus } from './invoiceType';
+import type { CustomerOption } from '../types/customerType';
+import type { Invoice, InvoiceFieldErrors, InvoiceInput, InvoiceStatus } from '../types/invoiceType';
 
 interface InvoiceFormProps {
   invoice: Invoice | null;
