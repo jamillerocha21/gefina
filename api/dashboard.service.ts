@@ -16,7 +16,7 @@ interface Dashboard {
 async function sumAmountByStatus(status: InvoiceStatus): Promise<number> {
   const sum = await prisma.invoice.aggregate({
     where: { status },
-    _sum: { amount: true },
+    _sum: { amount: true }
   });
 
   return !sum._sum.amount ? 0 : sum._sum.amount;
@@ -35,9 +35,9 @@ export default async function findDashboard(): Promise<Dashboard> {
       paid,
       pending,
       invoiceCount,
-      customerCount,
+      customerCount
     },
     recentInvoices,
-    overdueInvoices,
+    overdueInvoices
   };
 }

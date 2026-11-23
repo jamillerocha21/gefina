@@ -7,14 +7,10 @@ interface InvoiceTableProps {
 }
 
 export default function InvoiceTable(props: InvoiceTableProps) {
-  const headerBase = 'text-sm font-medium p-3 border-b border-border text-text-muted';
-  const headerCell = `${headerBase} text-left`;
-  const headerNumericCell = `${headerBase}`;
-
   const thStyle = 'text-sm font-medium p-3 border-b border-border text-text-muted';
 
   return (
-    <table className='w-full border-collapse'>
+    <table className="w-full border-collapse">
       <thead>
         <tr>
           <th className={`${thStyle} text-left`}>Cliente</th>
@@ -27,10 +23,7 @@ export default function InvoiceTable(props: InvoiceTableProps) {
       </thead>
       <tbody>
         {props.invoices.map((invoice) => (
-          <InvoiceRow 
-            key={invoice.id} 
-            invoice={invoice} 
-            edit={props.edit} />
+          <InvoiceRow key={invoice.id} invoice={invoice} edit={props.edit} />
         ))}
       </tbody>
     </table>
